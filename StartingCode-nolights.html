@@ -18,51 +18,94 @@
 	</style>
 		<script src="lib/three.min.js"></script>
 		<script src="lib/stats.min.js"></script>
-		<script src="lib/Coordinates.js"></script>
+ 		<script src="lib/Coordinates.js"></script>
 		<script src="lib/OrbitControls.js"></script>
 	</head>
 	<body>
 		
 		<script>
 		
-		var scene, camera, renderer, controls, stats;
+		var scene, camera, renderer, controls, stats, cube, startingTime;
 		
 		function Start() {
 			scene = new THREE.Scene();
 			camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
 			renderer = new THREE.WebGLRenderer( {antialias: true} );
 			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.setClearColor( 0xf0f0f0 );
+			renderer.setClearColor( 0x222222 );
 			document.body.appendChild( renderer.domElement );
 			
-			camera.position.set(3,4,6);
+			camera.position.set(0,0,40);
 			camera.lookAt( new THREE.Vector3(0,0,0));
 			
 			var geometry = new THREE.BoxGeometry(1,1,1);
-			var material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa } );
-			var cube = new THREE.Mesh( geometry, material );
+
+
+			//creo un array vuoto sia per i materiali sia per i cubi 
+			var material =[];
+			cube = [];
+			for (var i = 0; i < 42; i++) {
+				//per ogni elemento dell'array creo un sottoarray
+				cube[i] = [];
+				material[i] = [];
+				for (var j = 0; j < 20; j++) {
+					//creo un diverso materiale per ciascun cubo per poter poi lavorarci separatamente
+					material[i][j] = new THREE.MeshBasicMaterial();
+					cube[i][j] = new THREE.Mesh( geometry, material[i][j] );
+					cube[i][j].position.x = i * 2 - 41;
+					cube[i][j].position.y = j * 2 - 19;
+					scene.add( cube[i][j] );
+				}
+			}
 			
-			scene.add( cube );
-			
-			stats = new Stats();
-			stats.domElement.style.position = 'absolute';
-			stats.domElement.style.top = '0px';
-			document.body.appendChild( stats.domElement );
+			//stats = new Stats();
+			//stats.domElement.style.position = 'absolute';
+			//stats.domElement.style.top = '0px';
+			//document.body.appendChild( stats.domElement );
 			
 			// uncomment if you need to draw coordinate axes when building the scene
 			//Coordinates.drawAllAxes();
 			
 			controls = new THREE.OrbitControls( camera );
 			controls.addEventListener( 'change', Render );
+
+			//memorizzo il tempo iniziale
+			startingTime = Date.now();
 			
 			
 		}
-		
+	
 		function Update() {
 			requestAnimationFrame( Update );
+
+			for (var i = 0; i < 42; i++) {
+				for (var j = 0; j < 20; j++) {
+
+					//ad ogni update ricalcolo la posizione lungo l'asse z dei cubi tramite la funzione periodica sin(x).
+					//Il valore di x è dato dal delta temporale fra l'istante iniziale e l'istante di esecuzione
+					//moltiplicato per la somma gli indici di posizione del cubo meno il valor medio per ottenere la simmetria.
+					//Prima di applicare la funzione seno, il valore viene scalato per ottenere una velocità adatta ai riflessi umani.
+					var factor = Math.sin((Date.now()-startingTime) * (i+j-31.5) / (5000));
+
+					//poichè la funzione seno è compresa fra -1 e 1, poi scalo opportunamente il risultato
+					cube[i][j].position.z = factor * 10;
+					//aggiungo 1 per avere un valore di scalatura compreso fra 0 e 2
+					cube[i][j].scale.x = (factor + 1);
+					cube[i][j].scale.y = (factor + 1);
+					cube[i][j].scale.z = (factor + 1);
+
+					//applico la stessa operazione anche per ottenere i valori R, G e B, con frequenza diversa e rispettivamente
+					//lungo l'asse x, y e la siagonale con vettore (1, 1, 0). Dopodichè normalizzo il risultato.
+					var colorR = (Math.sin((Date.now()-startingTime) * (i-21.5) / 1000)+1)/2;
+					var colorG = (Math.sin((Date.now()-startingTime) * (j-10.5) / 1500)+1)/2;
+					var colorB = (Math.sin((Date.now()-startingTime) * (i+j-31.5) / 2000)+1)/2;
+
+					cube[i][j].material.color.set(new THREE.Color( colorR, colorG, colorB));
+				}
+			}
+
 			controls.update();  
-			stats.update();
+			//stats.update();
 			Render();
 		}
 		
