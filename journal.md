@@ -1,4 +1,4 @@
-# Primo progetto Grafica 3D Interattiva - Ermanno Venica #
+﻿# Primo progetto Grafica 3D Interattiva - Ermanno Venica #
 ## 22-03-2017 ##
 Inizio del progetto: si decide di creare un gruppo di cubi che si muovono secondo differenti armoniche in base alla posizione.
 Vengono svolti test di movimento e scalatura di oggetti e familiarizzato con il codice.
