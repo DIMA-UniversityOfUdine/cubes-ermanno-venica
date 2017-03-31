@@ -1,4 +1,4 @@
-﻿# Primo progetto Grafica 3D Interattiva#
+﻿# Primo progetto Grafica 3D Interattiva
 ![screenshot](/screenshot/4.JPG)
 ![screenshot](/screenshot/17.JPG)
 ##Concept##
