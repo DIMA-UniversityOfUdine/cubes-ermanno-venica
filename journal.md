@@ -1,6 +1,4 @@
 # Primo progetto Grafica 3D Interattiva - Ermanno Venica #
-![screenshot](/screenshot/4.JPG)
-![screenshot](/screenshot/17.JPG)
 ## 22-03-2017 ##
 Inizio del progetto: si decide di creare un gruppo di cubi che si muovono secondo differenti armoniche in base alla posizione.
 Vengono svolti test di movimento e scalatura di oggetti e familiarizzato con il codice.
@@ -13,6 +11,10 @@ Aggiunto l'effetto di scalatura, risolto il problema di inversione interno/ester
 Inserito l'effetto di modifica del colore, ad ogni cubo viene assegnato un materiale differente per non sovrascrivere il colore di tutti i cubi.
 ## 26-03-2017 ##
 Cambiato il colore dello sfondo e sistemato le frequenze.
+## 28-03-2017 ##
+Catturate i video, ottimizzato il codice per risolvere un problema di calo di framerate.
+## 29-03-2017 ##
+Montato il video e scritta la relazione.
 
 La telecamera può essere posizionata in qualsiasi punto durante l'esecuzione, ma i più esplicativi sono lungo i vettori (0, 0, 1) e (-1, 1, 0).
 La cartella screenshot contiene alcuni punti significativi dell'esecuzione dello script.
